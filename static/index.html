@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vue JS</title>
+
+    <!-- FONT AWESOME CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css"
+      integrity="sha512-xh6O/CkQoPOWDdYTDqeRdPCVd1SpvCA9XXcUnZS2FmJNp1coAFzvtCN9BmamE+4aHK8yyUHUSCcJHgXloTyT2A=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
+    <!-- GOOGLE FONTS -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- STYLEHSEET -->
+    <link rel="stylesheet" href="./css/style.css" />
+
+    <!-- VUE CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.10/dist/vue.js"></script>
+  </head>
+
+  <body>
+    <!-- Mounting the view instance to the div with the id of lessons-page -->
+    <div id="lessons-page">
+      <header class="header">
+        <h1>{{ sitename }}</h1>
+        <p
+          class="fa-solid fa-cart-shopping checkout"
+          v-on:click="displayCheckoutPage"
+        >
+          <span class="cart-count">{{ cartItemCount }}</span>
+        </p>
+      </header>
+      <div v-if="displayLessons">
+        <main>
+          <!-- HEADING SECTION -->
+          <section class="section-heading">
+            <h2 class="heading-secondary">
+              Pick a lesson and add it to the cart
+            </h2>
+          </section>
+
+          <!-- SEARCH SECTION -->
+          <section class="section-search">
+            <div class="search-box">
+              <input
+                type="text"
+                name="search"
+                id="search"
+                v-model="searchTerm"
+                placeholder="Search by subject or location..."
+              />
+            </div>
+
+            <div class="sorting-features">
+              <!-- PRICE -->
+              <div>
+                <input
+                  type="radio"
+                  id="price"
+                  value="price"
+                  v-model="sort.sortValue"
+                />
+                <label for="price">Price</label>
+              </div>
+              <!-- SUBJECT -->
+              <div>
+                <input
+                  type="radio"
+                  id="subject"
+                  value="subject"
+                  v-model="sort.sortValue"
+                />
+                <label for="subject">Subject</label>
+              </div>
+              <!-- AVAILABILITY -->
+              <div>
+                <input
+                  type="radio"
+                  id="availability"
+                  value="availability"
+                  v-model="sort.sortValue"
+                />
+                <label for="availability">Availability</label>
+              </div>
+              <!-- LOCATION -->
+              <div class="location">
+                <input
+                  type="radio"
+                  id="location"
+                  value="location"
+                  v-model="sort.sortValue"
+                />
+                <label for="location">Location</label>
+              </div>
+            </div>
+
+            <!-- ASCENDING/DESCENDING -->
+            <div>
+              <div class="ascending-descending">
+                <div>
+                  <input
+                    type="radio"
+                    name="ascending-descending"
+                    id="ascending"
+                    value="ascending"
+                    v-model="sort.sortOrder"
+                  />
+                  <label for="ascending">Ascending</label>
+                </div>
+                <div>
+                  <input
+                    type="radio"
+                    name="ascending-descending"
+                    id="descending"
+                    value="descending"
+                    v-model="sort.sortOrder"
+                  />
+                  <label for="descending">Descending</label>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- LESSONS SECTION -->
+          <section class="section-lessons">
+            <!-- Each lesson will be embedded into its own figure element -->
+            <figure class="lesson" v-for="(lesson, lessonId) in sortedLessons">
+              <image class="lesson-img" v-bind:src="lesson.image"></image>
+              <div class="lesson-details">
+                <h2 class="subject">{{ lesson.subject }}</h2>
+                <div class="lesson-details-extra">
+                  <p class="location">
+                    <span class="fa-solid fa-location-dot"></span> {{
+                    lesson.location }}
+                  </p>
+                  <p class="price">
+                    <span class="fa-solid fa-sterling-sign"></span> {{
+                    lesson.price }}
+                  </p>
+                  <p class="spaces">
+                    <span>Spaces Left: </span> {{ lesson.spacesLeft }}
+                  </p>
+                </div>
+                <button
+                  class="btn btn-add-cart"
+                  v-on:click="addToCart(lesson)"
+                  v-if="canAddToCart(lesson)"
+                >
+                  <span
+                    class="fa-solid fa-cart-shopping"
+                    style="pointer-events: none"
+                  ></span>
+                  Add To Cart
+                </button>
+
+                <!-- disable the button if canAddToCart returns false -->
+                <button class="btn btn-add-cart" disabled="disabled" v-else>
+                  <span class="fa-solid fa-cart-shopping"></span>
+                  Add To Cart
+                </button>
+              </div>
+            </figure>
+          </section>
+        </main>
+      </div>
+
+      <!-- CHECKOUT PAGE -->
+      <div v-else>
+        <main>
+          <!-- HEADING SECTION -->
+          <section class="section-heading">
+            <h2 class="heading-secondary">Checkout</h2>
+          </section>
+
+          <div v-if="isCheckoutPageEmpty">
+            <h2 class="heading-secondary">There are no items in the cart.</h2>
+          </div>
+          <div v-else>
+            <section class="section-lessons">
+              <figure class="lesson" v-for="lesson in cartItems">
+                <image class="lesson-img" v-bind:src="lesson.image"></image>
+                <div class="lesson-details">
+                  <h2 class="subject">{{ lesson.subject }}</h2>
+                  <div class="lesson-details-extra">
+                    <p class="location">
+                      <span class="fa-solid fa-location-dot"></span> {{
+                      lesson.location }}
+                    </p>
+                    <p class="price">
+                      <span class="fa-solid fa-sterling-sign"></span> {{
+                      lesson.price }}
+                    </p>
+                  </div>
+                  <button
+                    class="btn btn-remove-cart"
+                    v-on:click="removeFromCart(lesson.id)"
+                  >
+                    <span
+                      class="fa-solid fa-trash"
+                      style="pointer-events: none"
+                    ></span>
+                    Remove
+                  </button>
+                </div>
+              </figure>
+            </section>
+            <section class="section-checkout-form">
+              <form class="checkout-form">
+                <!-- FULL NAME -->
+                <div>
+                  <label for="name">Full Name</label>
+                  <input type="text" v-model="form.fullName" />
+                </div>
+                <!-- PHONE NUMBER -->
+                <div>
+                  <label for="phone-number">Phone Number</label>
+                  <input type="text" v-model="form.phoneNumber" />
+                </div>
+
+                <button
+                  class="btn btn-submit-order"
+                  v-if="checkoutFormValidation"
+                  v-on:click="(event) => submitOrder('Order submitted successfully!', event)"
+                >
+                  Submit
+                </button>
+                <button
+                  style="pointer-events: none"
+                  class="btn"
+                  disabled="disabled"
+                  v-else
+                >
+                  Submit
+                </button>
+              </form>
+            </section>
+          </div>
+        </main>
+      </div>
+    </div>
+    <script src="./js/script.js" type="module"></script>
+  </body>
+</html>
