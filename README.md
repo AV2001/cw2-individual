@@ -11,3 +11,7 @@ The deployed version of the appication can be accessed [here](http://cw2individu
 + Node
 + MongoDB
 <hr>
+
+## What I Learned? 🤔
+The most important thing that I learned whilst working on this project is how \
+the front-end communicates with the back-end and the database.
