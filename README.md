@@ -12,7 +12,10 @@ The deployed version of the appication can be accessed [here](http://cw2individu
 
 ## What I Learned? 🤔
 The most important thing that I learned whilst working on this project is how \
-the front-end communicates with the back-end and the database.
+the front-end communicates with the back-end and the database. \
+<br>
+Another skill I picked up along with the along was deploying the entire application \
+in the cloud using AWS services like Elastic Beanstalk and Code Pipeline.
 
 ## Contact Me 📞
 If you would like to reach out to me, please do so on LinkedIn. 
