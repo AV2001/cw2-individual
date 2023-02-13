@@ -34,22 +34,11 @@ let app = new Vue({
     },
 
     // removes a chosen lesson from the cart and increases the spaces left
-    removeFromCart(id) {
-      for (let i = 0; i < this.cart.length; i++) {
-        // checks if lesson id in cart is same as the id passed as param
-        if (this.cart[i].id === id) {
-          this.cart.splice(i, 1);
-          // uses break because we want to remove only one lesson at a time
-          break;
-        }
-      }
-
-      // increases the spaces left of the lesson that was removed from the cart
-      for (let i = 0; i < this.allLessons.length; i++) {
-        if (this.allLessons[i].id === id) {
-          this.allLessons[i].spacesLeft++;
-        }
-      }
+    removeFromCart(lesson) {
+      // increase the spaces left for the lesson
+      lesson.spacesLeft++;
+      // removes the lesson from the cart
+      this.cart.splice(this.cart.indexOf(lesson), 1);
     },
 
     /*
