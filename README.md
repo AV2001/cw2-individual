@@ -19,8 +19,8 @@ AWS Deployment: http://cw2individual-env.eba-vgx6ambx.us-east-1.elasticbeanstalk
 The most important thing that I learned whilst working on this project is how \
 the front-end communicates with the back-end and the database. \
 <br>
-Another skill I picked up along with the along was deploying the entire application \
-in the cloud using AWS services like Elastic Beanstalk and Code Pipeline.
+Another skill I picked up along the way was deploying the entire application \
+in the cloud using AWS services like Elastic Beanstalk and CodePipeline.
 
 ## Contact Me 📞
 If you would like to reach out to me, please do so on LinkedIn. 
