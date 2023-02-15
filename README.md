@@ -7,13 +7,14 @@ GitHub Repo: https://github.com/AV2001/cw2-individual
 <br>
 AWS Deployment: http://cw2individual-env.eba-vgx6ambx.us-east-1.elasticbeanstalk.com/
 
-## Tools Used ⚒️
+## Technologies Used ⚒️
 + HTML
 + CSS
 + JavaScript
 + Vue
 + Node
 + MongoDB
++ AWS
 
 ## What I Learned? 🤔
 The most important thing that I learned whilst working on this project is how \
